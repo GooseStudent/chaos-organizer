@@ -7,10 +7,13 @@
     "dev": "nodemon src/index.js"
   },
   "dependencies": {
+    "@koa/multer": "^4.0.0",
     "koa": "^2.14.0",
-    "koa-router": "^12.0.0",
     "koa-bodyparser": "^4.4.0",
     "koa-cors": "^0.0.16",
+    "koa-router": "^12.0.0",
+    "koa-static": "^5.0.0",
+    "multer": "^2.4.0",
     "ws": "^8.12.0"
   },
   "devDependencies": {

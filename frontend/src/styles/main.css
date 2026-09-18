@@ -256,3 +256,142 @@ body {
 .sidebar-nav a.active .icon {
   opacity: 1;
 }
+
+.message-image,
+.message-video {
+  max-width: 320px;
+  max-height: 320px;
+  border-radius: 8px;
+  display: block;
+}
+
+.message-audio {
+  width: 100%;
+  max-width: 320px;
+}
+
+.message-file {
+  color: #1a73e8;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.message-file:hover {
+  text-decoration: underline;
+}
+
+.chat-messages.drag-over {
+  outline: 2px dashed #1a73e8;
+  outline-offset: -8px;
+  background: #eef5ff;
+}
+
+.message-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-download:hover {
+  background: #e8eaed;
+}
+
+.btn-download-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.btn-favorite {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 4px;
+  color: #888;
+  border-radius: 4px;
+}
+
+.btn-favorite:hover {
+  background: #e8eaed;
+}
+
+.message.is-favorite .btn-favorite {
+  color: #f5a623;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-search {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-search:hover {
+  background: #e8eaed;
+}
+
+.btn-search-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-bottom: 1px solid #ddd;
+  background: #f8f9fa;
+}
+
+.search-bar[hidden] {
+  display: none;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #1a73e8;
+}
+
+.search-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.search-close:hover {
+  background: #e8eaed;
+} 

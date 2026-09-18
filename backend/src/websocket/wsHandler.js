@@ -1,48 +1,33 @@
-const WebSocket = require('ws');
+const WebSocket = require("ws");
 
-let wss = null;
 const clients = new Set();
 
 function broadcast(data) {
-  const message = JSON.stringify(data);
-  clients.forEach((client) => {
+  const payload = JSON.stringify(data);
+  for (const client of clients) {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
+      client.send(payload);
     }
-  });
+  }
 }
 
 module.exports = (server) => {
-  wss = new WebSocket.Server({ 
-    server,
-    path: '/ws' 
-  });
+  const wss = new WebSocket.Server({ server, path: "/ws-chaos" });
 
-  wss.on('connection', (ws) => {
-    console.log('New WebSocket client connected');
+  wss.on("connection", (ws) => {
+    console.log("WebSocket client connected");
     clients.add(ws);
 
-    ws.on('message', (data) => {
-      try {
-        const message = JSON.parse(data);
-        console.log('WebSocket message received:', message);
-        broadcast(message);
-      } catch (error) {
-        console.error('WebSocket message error:', error);
-      }
-    });
-
-    ws.on('close', () => {
+    ws.on("close", () => {
       clients.delete(ws);
-      console.log('WebSocket client disconnected');
+      console.log("WebSocket client disconnected");
     });
 
-    ws.on('error', (error) => {
-      console.error('WebSocket error:', error);
+    ws.on("error", (err) => {
+      console.error("WebSocket error:", err);
+      clients.delete(ws);
     });
   });
-
-  return { broadcast };
 };
 
 module.exports.broadcast = broadcast;

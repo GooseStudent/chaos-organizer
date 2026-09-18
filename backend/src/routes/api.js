@@ -1,17 +1,34 @@
-const Router = require('koa-router');
-const messageController = require('../controllers/messageController.js');
+const Router = require("koa-router");
+const multer = require("@koa/multer");
+const path = require("path");
+const crypto = require("crypto");
 
-const router = new Router({ prefix: '/api' });
+const messageController = require("../controllers/messageController.js");
 
-router.get('/messages', messageController.getMessages);
-router.post('/messages', messageController.createMessage);
-router.delete('/messages/:id', messageController.deleteMessage);
+const router = new Router({ prefix: "/api" });
 
-router.post('/messages/:id/favorite', messageController.toggleFavorite);
-router.get('/favorites', messageController.getFavorites);
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, "..", "..", "public", "uploads"),
+  filename: (ctx, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const name = crypto.randomBytes(16).toString("hex") + ext;
+    cb(null, name);
+  },
+});
 
-router.post('/messages/:id/pin', messageController.pinMessage);
-router.delete('/messages/pin', messageController.unpinMessage);
-router.get('/messages/pin', messageController.getPinned);
+const upload = multer({ storage });
+
+router.get("/messages/search", messageController.search);
+router.get("/messages/type/:type", messageController.getByType);
+router.post("/messages/:id/favorite", messageController.toggleFavorite);
+router.get("/favorites", messageController.getFavorites);
+router.get("/messages/:id/download", messageController.downloadFile);
+router.get("/messages", messageController.getMessages);
+router.post("/messages", messageController.createMessage);
+router.post(
+  "/messages/upload",
+  upload.single("file"),
+  messageController.uploadFile,
+);
 
 module.exports = router;

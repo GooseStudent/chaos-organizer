@@ -1,4 +1,9 @@
-const WS_URL = 'wss://chaos-organizer-2p5r.onrender.com/ws';
+const WS_URL =
+  location.hostname === "localhost"
+    ? "ws://localhost:3000/ws-chaos"
+    : (location.protocol === "https:" ? "wss://" : "ws://") +
+      location.host +
+      "/ws-chaos";
 
 export default class WebSocketService {
   constructor() {
@@ -11,33 +16,32 @@ export default class WebSocketService {
   connect() {
     try {
       this.ws = new WebSocket(WS_URL);
-      
+
       this.ws.onopen = () => {
-        console.log('WebSocket connected');
+        console.log("WebSocket connected");
         this.reconnectAttempts = 0;
       };
 
       this.ws.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
-          console.log('WebSocket message received:', data);
-          this.listeners.forEach(fn => fn(data));
-        } catch (error) {
-          console.error('Failed to parse WebSocket message:', error);
+          this.listeners.forEach((fn) => fn(data));
+        } catch (err) {
+          console.error("Failed to parse WebSocket message:", err);
         }
       };
 
       this.ws.onclose = () => {
-        console.log('WebSocket disconnected');
+        console.log("WebSocket disconnected");
         this.reconnect();
       };
 
-      this.ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
+      this.ws.onerror = (err) => {
+        console.error("WebSocket error:", err);
         this.ws.close();
       };
-    } catch (error) {
-      console.error('Failed to connect WebSocket:', error);
+    } catch (err) {
+      console.error("Failed to connect WebSocket:", err);
     }
   }
 
@@ -45,7 +49,7 @@ export default class WebSocketService {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
       setTimeout(() => {
-        console.log('Reconnecting... Attempt ' + this.reconnectAttempts);
+        console.log("Reconnecting... Attempt " + this.reconnectAttempts);
         this.connect();
       }, 1000 * this.reconnectAttempts);
     }
@@ -55,7 +59,7 @@ export default class WebSocketService {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(data));
     } else {
-      console.warn('WebSocket not connected, message not sent');
+      console.warn("WebSocket not connected, message not sent");
     }
   }
 
@@ -64,8 +68,6 @@ export default class WebSocketService {
   }
 
   disconnect() {
-    if (this.ws) {
-      this.ws.close();
-    }
+    if (this.ws) this.ws.close();
   }
 }
